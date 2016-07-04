@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="apps.marc.chariteappnew.MainActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_Button"
+        android:id="@+id/HomeToHome_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="bottom" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/history_button"
+        android:id="@+id/HomeToHistory_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom"
+        android:onClick="toHistory" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/HomeWelcome_text"
+        android:id="@+id/Home_text"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/History_entry"
+        android:layout_below="@+id/Home_text"
+        android:layout_marginTop="80dp"
+        android:layout_toLeftOf="@+id/HomeToHistory_button"
+        android:layout_alignLeft="@+id/Home_text"
+        android:layout_alignStart="@+id/Home_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/HomeLittle_text"
+        android:id="@+id/HomeLittle_text"
+        android:layout_below="@+id/Home_text"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Submit_button"
+        android:id="@+id/SubmitHistoryEntry_button"
+        android:layout_below="@+id/History_entry"
+        android:layout_toLeftOf="@+id/HomeToHistory_button"
+        android:layout_toStartOf="@+id/HomeToHistory_button"
+        android:onClick="sendHistoryEntry" />
+
+</RelativeLayout>

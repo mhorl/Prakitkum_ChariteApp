@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/historyItem_image"
+        android:src="@drawable/meal_icon"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Nudeln mit Soße"
+        android:id="@+id/historyItem_largeText"
+        android:layout_alignTop="@+id/historyItem_image"
+        android:layout_toRightOf="@+id/historyItem_image"
+        android:layout_toEndOf="@+id/historyItem_image"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="11:25 Uhr - 04.07.2016"
+        android:id="@+id/historyItem_smallText"
+        android:layout_alignBottom="@+id/historyItem_image"
+        android:layout_alignLeft="@+id/historyItem_largeText"
+        android:layout_alignStart="@+id/historyItem_largeText"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp" />
+</RelativeLayout>
