@@ -11,8 +11,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 
-//this is a new comment, checking if github works
-//somemore comments
 
 public class MainActivity extends AppCompatActivity {
 
