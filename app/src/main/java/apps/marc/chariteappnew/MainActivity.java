@@ -14,12 +14,13 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Database-Handler for saving and loading MealEntry-data
     DBHandler dbHandler;
 
-    //Holding list-items for eating-history
-    private ArrayList<MealEntry> historyItems;
+    //Holds MealEntry-data temporary to disply it in History
+    ArrayList<MealEntry> historyItems;
 
-    //References
+    //References to Interface-Objects
     EditText history_entry;
 
 
@@ -31,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
         //Initialize Database-Handler
         dbHandler = new DBHandler(getApplicationContext(), null, null, 1);
 
+        //Initialise History-List
         historyItems = new ArrayList<MealEntry>();
 
+        //Create Reference
         history_entry = (EditText) findViewById(R.id.History_entry);
     }
 
@@ -43,15 +46,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.history);
 
         //Load History from DB
-        Toast t = Toast.makeText(this, "BEFORE", Toast.LENGTH_SHORT);
-        t.show();
         historyItems = dbHandler.loadDB();
-        t = Toast.makeText(this, "AFTER", Toast.LENGTH_SHORT);
-        t.show();
 
         //Show eating-history
         ListAdapter listAdap = new HistoryItemAdapter(getApplicationContext(), historyItems);
-        //ListAdapter listAdap = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, historyList);
         ListView myListView = (ListView) findViewById(R.id.Meals_list);
         myListView.setAdapter(listAdap);
     }
@@ -63,18 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
     //Saving entered user-text into 'historyList'
     public void sendHistoryEntry(View v){
-        //Get current Date and Time
-        Date mealDate = new Date();
-
         //Get mealname
         EditText historyEntry = (EditText) findViewById(R.id.History_entry);
         String mealName = historyEntry.getText().toString();
-
-
-
-        //Add mealName and mealDate to List
-        MealEntry historyItem = new MealEntry(0, mealName, mealDate, false);
-        historyItems.add(historyItem);
 
         //Add mealEntry to Database
         dbHandler.addMeal(dbHandler.createMealEntry(mealName, false));
@@ -84,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         history_entry.setText("");
 
         //Generate toast
-        /*Toast t = Toast.makeText(this, historyList.get(historyList.size()-1)+" added!", Toast.LENGTH_SHORT);
-        t.show();*/
+        Toast t = Toast.makeText(this, "New meal added!", Toast.LENGTH_SHORT);
+        t.show();
     }
 }

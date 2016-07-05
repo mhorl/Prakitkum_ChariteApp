@@ -76,7 +76,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String query = "SELECT * FROM "+TABLE_MEALS+" WHERE 1;";
+        String query = "SELECT * FROM "+TABLE_MEALS+" WHERE 1 ORDER BY meal_id DESC;";
 
         //Set cursor to query-result
         Cursor dbC = db.rawQuery(query, null);
