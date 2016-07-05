@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -32,7 +33,7 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableMeals = "CREATE TABLE "+TABLE_MEALS+"("
-                +COLUMN_MEAL_ID+" INTEGER PRIMATY KEY AUTOINCREMENT, "
+                +COLUMN_MEAL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "
                 +COLUMN_MEAL_PRODUCTNAME+" TEXT, "
                 +COLUMN_MEAL_DATE+" TEXT, "
                 +COLUMN_MEAL_COMMITTED+" INTEGER);";
@@ -70,12 +71,12 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //Get DB content
-    public ArrayList<MealEntry> loadDB(String TABLE_NAME){
+    public ArrayList<MealEntry> loadDB(){
         ArrayList<MealEntry> queryResults = new ArrayList<MealEntry>();
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String query = "SELECT * FROM "+TABLE_NAME+" WHERE 1;";
+        String query = "SELECT * FROM "+TABLE_MEALS+" WHERE 1;";
 
         //Set cursor to query-result
         Cursor dbC = db.rawQuery(query, null);
@@ -108,9 +109,19 @@ public class DBHandler extends SQLiteOpenHelper {
 
             //Add to MealEntry-Stack
             queryResults.add(mealEntry);
+
+            //Move cursor to next row
+            dbC.moveToNext();
         }
 
         return queryResults;
+    }
+
+    //Prepare Values for Database-Insert, creating MealEntry Object
+    public MealEntry createMealEntry(String mealName, Boolean mealCommitted){
+        Date mealDate = new Date();
+
+        return new MealEntry(0, mealName, mealDate, mealCommitted);
     }
 
 

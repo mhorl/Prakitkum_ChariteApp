@@ -14,6 +14,8 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+    DBHandler dbHandler;
+
     //Holding list-items for eating-history
     private ArrayList<MealEntry> historyItems;
 
@@ -26,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Initialize Database-Handler
+        dbHandler = new DBHandler(getApplicationContext(), null, null, 1);
+
         historyItems = new ArrayList<MealEntry>();
 
         history_entry = (EditText) findViewById(R.id.History_entry);
@@ -36,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Set View to History
         setContentView(R.layout.history);
+
+        //Load History from DB
+        Toast t = Toast.makeText(this, "BEFORE", Toast.LENGTH_SHORT);
+        t.show();
+        historyItems = dbHandler.loadDB();
+        t = Toast.makeText(this, "AFTER", Toast.LENGTH_SHORT);
+        t.show();
 
         //Show eating-history
         ListAdapter listAdap = new HistoryItemAdapter(getApplicationContext(), historyItems);
@@ -58,9 +70,14 @@ public class MainActivity extends AppCompatActivity {
         EditText historyEntry = (EditText) findViewById(R.id.History_entry);
         String mealName = historyEntry.getText().toString();
 
+
+
         //Add mealName and mealDate to List
         MealEntry historyItem = new MealEntry(0, mealName, mealDate, false);
         historyItems.add(historyItem);
+
+        //Add mealEntry to Database
+        dbHandler.addMeal(dbHandler.createMealEntry(mealName, false));
 
 
         //Clear entry-field after userinput
