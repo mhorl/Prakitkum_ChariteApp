@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         //Get current Date and Time
         Date mealDate = new Date();
 
-        //Get meaname
+        //Get mealname
         EditText historyEntry = (EditText) findViewById(R.id.History_entry);
         String mealName = historyEntry.getText().toString();
 

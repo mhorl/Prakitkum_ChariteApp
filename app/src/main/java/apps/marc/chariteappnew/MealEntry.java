@@ -16,6 +16,7 @@ public class MealEntry {
         this.meal_committed = meal_committed;
     }
 
+
     //Getter
     public int getMealId() {
         return meal_id;

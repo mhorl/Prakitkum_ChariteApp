@@ -3,8 +3,15 @@ package apps.marc.chariteappnew;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -14,9 +21,8 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TABLE_MEALS = "meals";
 
     public static final String COLUMN_MEAL_ID = "meal_id";
-    public static final String COLUMN_MEAL_PRODUCTNAME = "meal_productName";
+    public static final String COLUMN_MEAL_PRODUCTNAME = "meal_name";
     public static final String COLUMN_MEAL_DATE = "meal_date";
-    public static final String COLUMN_MEAL_TIME = "meal_time";
     public static final String COLUMN_MEAL_COMMITTED = "meal_committed";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -28,8 +34,8 @@ public class DBHandler extends SQLiteOpenHelper {
         String createTableMeals = "CREATE TABLE "+TABLE_MEALS+"("
                 +COLUMN_MEAL_ID+" INTEGER PRIMATY KEY AUTOINCREMENT, "
                 +COLUMN_MEAL_PRODUCTNAME+" TEXT, "
-                +COLUMN_MEAL_DATE+" DATE, "
-                +COLUMN_MEAL_TIME+" TIME);";
+                +COLUMN_MEAL_DATE+" TEXT, "
+                +COLUMN_MEAL_COMMITTED+" INTEGER);";
         db.execSQL(createTableMeals);
 
 
@@ -46,6 +52,12 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues meal_values = new ContentValues();
         meal_values.put(COLUMN_MEAL_PRODUCTNAME, meal.getMealName());
 
+        //Parse Date to String
+        DateFormat iso8601FormatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        meal_values.put(COLUMN_MEAL_DATE, iso8601FormatDate.format(meal.getMealDate()));
+
+        meal_values.put(COLUMN_MEAL_COMMITTED, meal.getMealCommitted());
+
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_MEALS, null, meal_values);
         db.close();
@@ -55,6 +67,50 @@ public class DBHandler extends SQLiteOpenHelper {
     public void deleteMeal(int meal_id){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_MEALS+" WHERE ID="+meal_id+";");
+    }
+
+    //Get DB content
+    public ArrayList<MealEntry> loadDB(String TABLE_NAME){
+        ArrayList<MealEntry> queryResults = new ArrayList<MealEntry>();
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT * FROM "+TABLE_NAME+" WHERE 1;";
+
+        //Set cursor to query-result
+        Cursor dbC = db.rawQuery(query, null);
+        //Set cursor on to first object
+        dbC.moveToFirst();
+
+        //Iterate over result
+        while(!dbC.isAfterLast()){
+            //Getting Values
+            int mealID = dbC.getInt(dbC.getColumnIndex("meal_id"));
+            String mealName = dbC.getString(dbC.getColumnIndex("meal_name"));
+
+            //Parse DB-Date-String to Date
+            String mealDateString = dbC.getString(dbC.getColumnIndex("meal_date"));
+            DateFormat iso8601FormatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date mealDate = new Date();
+            try {
+                mealDate = iso8601FormatDate.parse(mealDateString);
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+                System.out.println("Failed to parse meal_date (String) to Object 'Date");
+            }
+
+            //No native boolean-type in SQLite
+            boolean mealCommitted = dbC.getInt(dbC.getColumnIndex("meal_committed")) != 0;
+
+            //Create MealEntry object with values
+            MealEntry mealEntry = new MealEntry(mealID, mealName, mealDate, mealCommitted);
+
+            //Add to MealEntry-Stack
+            queryResults.add(mealEntry);
+        }
+
+        return queryResults;
     }
 
 
