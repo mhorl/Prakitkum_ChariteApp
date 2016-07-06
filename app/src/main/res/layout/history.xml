@@ -44,4 +44,17 @@
         android:layout_alignRight="@+id/HistoryToHistory_button"
         android:layout_alignEnd="@+id/HistoryToHistory_button" />
 
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
+        android:id="@+id/HistoryToHome_imageButton"
+        android:src="@mipmap/undo"
+        android:layout_alignTop="@+id/History_text"
+        android:layout_alignLeft="@+id/Meals_list"
+        android:layout_alignStart="@+id/Meals_list"
+        android:onClick="toHome" />
+
 </RelativeLayout>
