@@ -20,11 +20,14 @@ public class MainActivity extends AppCompatActivity {
     //ListAdapter for listView
     HistoryItemAdapter listAdap;
 
-    //Holds MealEntry-data temporary to disply it in History
+    //Holds MealEntry-data temporary to display it in History
     ArrayList<MealEntry> historyItems;
 
     //References to Interface-Objects
     EditText history_entry;
+
+    //NetworkHandler to send data to server
+    NetworkHandler networkHandler;
 
 
     @Override
@@ -33,13 +36,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Initialize Database-Handler
-        dbHandler = new DBHandler(getApplicationContext(), null, null, 1);
+        this.dbHandler = new DBHandler(getApplicationContext(), null, null, 1);
 
         //Initialise History-List
-        historyItems = new ArrayList<MealEntry>();
+        this.historyItems = new ArrayList<MealEntry>();
 
         //Create Reference
-        history_entry = (EditText) findViewById(R.id.History_entry);
+        this.history_entry = (EditText) findViewById(R.id.History_entry);
+
+        //Initialize NetworkHandler
+        this.networkHandler = new NetworkHandler(getApplicationContext());
     }
 
     //Button to History
@@ -63,9 +69,12 @@ public class MainActivity extends AppCompatActivity {
         checkedItems = listAdap.getCheckboxState();
 
         //Iterate over checkedItems
-        for(int i = 0; i < checkedItems.length; i++){
-            if(checkedItems[i]){
+        for(int i = 0; i < checkedItems.length; i++) {
+            if (checkedItems[i]) {
                 String mealName = historyItems.get(i).getMealName();
+
+                networkHandler.sendMealToDatabase(historyItems.get(i));
+
                 Toast t = Toast.makeText(this, mealName, Toast.LENGTH_SHORT);
                 t.show();
             }
