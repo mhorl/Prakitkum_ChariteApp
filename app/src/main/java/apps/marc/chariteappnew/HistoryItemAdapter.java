@@ -30,7 +30,7 @@ public class HistoryItemAdapter extends ArrayAdapter<MealEntry>{
         this.checkboxState = new boolean[this.historyItems.size()];
     }
 
-    private class ViewHolder(){
+    static class ViewHolder{
         TextView historyItem_largeText;
         TextView historyItem_smallText;
         ImageView historyItem_image;
@@ -43,36 +43,36 @@ public class HistoryItemAdapter extends ArrayAdapter<MealEntry>{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        //convertView = layoutInflater.inflate(R.layout.history_item_template, parent, false);
 
-
-
-        //Checkbox-handling
-        final CheckBox checkBox;
+        final ViewHolder viewHolder;
 
         if(convertView == null){
             convertView = layoutInflater.inflate(R.layout.history_item_template, parent, false);
 
+            viewHolder = new ViewHolder();
 
-            checkBox = (CheckBox) convertView.findViewById(R.id.historyItem_checkBox);
+            viewHolder.historyItem_largeText = (TextView) convertView.findViewById(R.id.historyItem_largeText);
+            viewHolder.historyItem_smallText = (TextView) convertView.findViewById(R.id.historyItem_smallText);
+            viewHolder.historyItem_image = (ImageView) convertView.findViewById(R.id.historyItem_image);
+            viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.historyItem_checkBox);
 
-            convertView.setTag(checkBox);
+            convertView.setTag(viewHolder);
         }
         else{
-            checkBox = (CheckBox) convertView.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
         if(checkboxState[position]){
-            checkBox.setChecked(true);
+            viewHolder.checkBox.setChecked(true);
         }
         else{
-            checkBox.setChecked(false);
+            viewHolder.checkBox.setChecked(false);
         }
 
-        checkBox.setOnClickListener(new View.OnClickListener() {
+        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkBox.isChecked()){
+                if(viewHolder.checkBox.isChecked()){
                     checkboxState[position] = true;
                 }
                 else{
@@ -80,21 +80,17 @@ public class HistoryItemAdapter extends ArrayAdapter<MealEntry>{
                 }
             }
         });
-        //*****************
 
         MealEntry historyItem = getItem(position);
-        TextView historyItem_largeText = (TextView) convertView.findViewById(R.id.historyItem_largeText);
-        TextView historyItem_smallText = (TextView) convertView.findViewById(R.id.historyItem_smallText);
-        ImageView historyItem_image = (ImageView) convertView.findViewById(R.id.historyItem_image);
 
-        historyItem_largeText.setText(historyItem.getMealName());
-        historyItem_largeText.setTextColor(Color.BLACK);
+        viewHolder.historyItem_largeText.setText(historyItem.getMealName());
+        viewHolder.historyItem_largeText.setTextColor(Color.BLACK);
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        historyItem_smallText.setText(dateFormat.format(historyItem.getMealDate())); //"11:25 Uhr - 04.07.2016"
-        historyItem_smallText.setTextColor(Color.GRAY);
+        viewHolder.historyItem_smallText.setText(dateFormat.format(historyItem.getMealDate())); //"11:25 Uhr - 04.07.2016"
 
-        historyItem_image.setImageResource(R.drawable.meal_icon);
+        viewHolder.historyItem_smallText.setTextColor(Color.GRAY);
+        viewHolder.historyItem_image.setImageResource(R.drawable.meal_icon);
 
         return convertView;
     }
