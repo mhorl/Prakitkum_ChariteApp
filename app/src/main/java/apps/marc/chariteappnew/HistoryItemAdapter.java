@@ -30,32 +30,56 @@ public class HistoryItemAdapter extends ArrayAdapter<MealEntry>{
         this.checkboxState = new boolean[this.historyItems.size()];
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        convertView = layoutInflater.inflate(R.layout.history_item_template, parent, false);
-
-        //Checkbox-handling
-
+    private class ViewHolder(){
+        TextView historyItem_largeText;
+        TextView historyItem_smallText;
+        ImageView historyItem_image;
         CheckBox checkBox;
 
+    }
+
+
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        //convertView = layoutInflater.inflate(R.layout.history_item_template, parent, false);
+
+
+
+        //Checkbox-handling
+        final CheckBox checkBox;
+
         if(convertView == null){
+            convertView = layoutInflater.inflate(R.layout.history_item_template, parent, false);
+
+
             checkBox = (CheckBox) convertView.findViewById(R.id.historyItem_checkBox);
 
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    int boxPosition = (Integer) buttonView.getTag();
-                    historyItems.get(boxPosition).setChecked(buttonView.isChecked());
-                }
-            });
+            convertView.setTag(checkBox);
         }
         else{
             checkBox = (CheckBox) convertView.getTag();
         }
 
-        checkBox.setChecked(true); //historyItems.get(position).isChecked()
+        if(checkboxState[position]){
+            checkBox.setChecked(true);
+        }
+        else{
+            checkBox.setChecked(false);
+        }
 
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkBox.isChecked()){
+                    checkboxState[position] = true;
+                }
+                else{
+                    checkboxState[position] = false;
+                }
+            }
+        });
         //*****************
 
         MealEntry historyItem = getItem(position);
