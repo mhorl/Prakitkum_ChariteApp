@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">ChariteAppNew</string>
     <string name="home_Button">Home</string>
-    <string name="history_button">History</string>
+    <string name="commit_button">Submit!</string>
     <string name="HomeWelcome_text">Welcome to App</string>
     <string name="History_text">History</string>
     <string name="HomeLittle_text">Enter you meal and klick \'Submit\'!</string>
     <string name="Submit_button">Submit </string>
+    <string name="toHistory_button">History</string>
 </resources>

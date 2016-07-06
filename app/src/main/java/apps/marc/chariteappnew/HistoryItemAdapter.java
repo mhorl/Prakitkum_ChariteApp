@@ -94,4 +94,13 @@ public class HistoryItemAdapter extends ArrayAdapter<MealEntry>{
 
         return convertView;
     }
+
+    //Getter
+    public ArrayList<MealEntry> getHistoryItems() {
+        return historyItems;
+    }
+
+    public boolean[] getCheckboxState() {
+        return checkboxState;
+    }
 }

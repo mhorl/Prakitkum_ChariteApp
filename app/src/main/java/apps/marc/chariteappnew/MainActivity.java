@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     //Database-Handler for saving and loading MealEntry-data
     DBHandler dbHandler;
 
+    //ListAdapter for listView
+    HistoryItemAdapter listAdap;
+
     //Holds MealEntry-data temporary to disply it in History
     ArrayList<MealEntry> historyItems;
 
@@ -49,9 +52,24 @@ public class MainActivity extends AppCompatActivity {
         historyItems = dbHandler.loadDB();
 
         //Show eating-history
-        ListAdapter listAdap = new HistoryItemAdapter(getApplicationContext(), historyItems);
+        listAdap = new HistoryItemAdapter(getApplicationContext(), historyItems);
         ListView myListView = (ListView) findViewById(R.id.Meals_list);
         myListView.setAdapter(listAdap);
+    }
+
+    //Performs 'commit'-action on selected items
+    public void onClickCommit(View v){
+        boolean[] checkedItems;
+        checkedItems = listAdap.getCheckboxState();
+
+        //Iterate over checkedItems
+        for(int i = 0; i < checkedItems.length; i++){
+            if(checkedItems[i]){
+                String mealName = historyItems.get(i).getMealName();
+                Toast t = Toast.makeText(this, mealName, Toast.LENGTH_SHORT);
+                t.show();
+            }
+        }
     }
 
     //Button to Home

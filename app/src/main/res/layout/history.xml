@@ -6,23 +6,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/home_Button"
-        android:id="@+id/HistoryToHome_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_gravity="bottom"
-        android:onClick="toHome" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/history_button"
-        android:id="@+id/HistoryToHistory_button"
+        android:text="@string/commit_button"
+        android:id="@+id/Commit_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:onClick="onClickCommit" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,12 +27,22 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:id="@+id/Meals_list"
-        android:layout_above="@+id/HistoryToHome_button"
+        android:background="@drawable/list_border"
+        android:divider="#6B6B6B"
+        android:dividerHeight="2dp"
         android:layout_below="@+id/History_text"
-        android:layout_alignRight="@+id/HistoryToHistory_button"
-        android:layout_alignEnd="@+id/HistoryToHistory_button" />
+        android:layout_alignRight="@+id/Commit_button"
+        android:layout_alignEnd="@+id/Commit_button"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"
+        android:layout_above="@+id/Commit_button" />
 
     <ImageButton
         android:layout_width="40dp"
@@ -52,9 +52,23 @@
         android:background="@android:color/transparent"
         android:id="@+id/HistoryToHome_imageButton"
         android:src="@mipmap/undo"
-        android:layout_alignTop="@+id/History_text"
+        android:onClick="toHome"
+        android:layout_above="@+id/Meals_list"
+        android:layout_alignLeft="@+id/Meals_list"
+        android:layout_alignStart="@+id/Meals_list" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Choose all Meal-Items you would like to submit!"
+        android:id="@+id/textView"
+        android:layout_below="@+id/Meals_list"
+        android:layout_toLeftOf="@+id/Commit_button"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="5dp"
         android:layout_alignLeft="@+id/Meals_list"
         android:layout_alignStart="@+id/Meals_list"
-        android:onClick="toHome" />
+        android:layout_marginLeft="10dp" />
 
 </RelativeLayout>

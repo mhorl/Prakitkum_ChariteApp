@@ -9,9 +9,6 @@ public class MealEntry {
     private Date meal_date;
     private boolean meal_committed;
 
-    //For Adapter
-    private boolean checked;
-
     public MealEntry(int meal_id, String meal_name, Date meal_date, boolean meal_committed){
         this.meal_id = meal_id;
         this.meal_name = meal_name;
@@ -33,7 +30,6 @@ public class MealEntry {
     public  boolean getMealCommitted() {
         return meal_committed;
     }
-    public boolean isChecked(){return checked;}
 
     //Setter
     public void setMealId(int meal_id) {
@@ -48,5 +44,4 @@ public class MealEntry {
     public void setMealCommitted(boolean meal_committed) {
         this.meal_committed = meal_committed;
     }
-    public void setChecked(boolean checked){ this.checked = checked;}
 }
