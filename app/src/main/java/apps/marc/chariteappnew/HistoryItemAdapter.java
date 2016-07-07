@@ -64,9 +64,20 @@ public class HistoryItemAdapter extends ArrayAdapter<MealEntry>{
 
         if(checkboxState[position]){
             viewHolder.checkBox.setChecked(true);
+            if(historyItems.get(position).isMealCommitted()){
+                viewHolder.checkBox.setAlpha(0.4f); //set transparency-value
+                viewHolder.checkBox.setEnabled(false); //Disable Checkbox, user is unable to check/uncheck
+            }
+        }
+        else if(historyItems.get(position).isMealCommitted()){
+            viewHolder.checkBox.setChecked(true);
+            viewHolder.checkBox.setAlpha(0.4f); //set transparency-value
+            viewHolder.checkBox.setEnabled(false); //Enable Checkbox, user is able to check/uncheck
         }
         else{
             viewHolder.checkBox.setChecked(false);
+            viewHolder.checkBox.setAlpha(1.0f); //set transparency-value
+            viewHolder.checkBox.setEnabled(true); //Disable Checkbox, user is unable to check/uncheck
         }
 
         viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {

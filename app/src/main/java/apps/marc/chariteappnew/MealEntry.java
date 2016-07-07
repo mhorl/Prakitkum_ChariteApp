@@ -27,7 +27,7 @@ public class MealEntry {
     public Date getMealDate() {
         return meal_date;
     }
-    public  boolean getMealCommitted() {
+    public  boolean isMealCommitted() {
         return meal_committed;
     }
 

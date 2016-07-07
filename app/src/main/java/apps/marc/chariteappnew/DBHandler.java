@@ -57,7 +57,7 @@ public class DBHandler extends SQLiteOpenHelper {
         DateFormat iso8601FormatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         meal_values.put(COLUMN_MEAL_DATE, iso8601FormatDate.format(meal.getMealDate()));
 
-        meal_values.put(COLUMN_MEAL_COMMITTED, meal.getMealCommitted());
+        meal_values.put(COLUMN_MEAL_COMMITTED, meal.isMealCommitted());
 
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_MEALS, null, meal_values);
