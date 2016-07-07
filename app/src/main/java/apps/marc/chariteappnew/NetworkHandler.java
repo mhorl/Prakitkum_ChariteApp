@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,10 +34,17 @@ public class NetworkHandler {
         String mealName = meal.getMealName();
 
         Date mealDate = meal.getMealDate();
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String mealDateString = dateFormat.format(mealDate);
 
-        String serverQuery = "http://192.168.56.1/PROJECTS/ChariteApp/commitData.php?mealName="+mealName+"&mealDate="+mealDateString;
+        String serverQuery = "";
+        try{
+            serverQuery = "http://192.168.56.1/PROJECTS/ChariteApp/commitData.php?mealName="+ URLEncoder.encode(mealName, "UTF-8")+"&mealDate="+URLEncoder.encode(mealDateString, "UTF-8");
+        }
+        catch (Exception e){
+            Log.i("Connection", "Error while creating serverquery.");
+            e.printStackTrace();
+        }
 
         //Checking if Connection is available
         networkInfo = connectivityManager.getActiveNetworkInfo();
