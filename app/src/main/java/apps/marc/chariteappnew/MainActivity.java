@@ -64,21 +64,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Performs 'commit'-action on selected items
-    public void onClickCommit(View v){
+    public int onClickCommit(View v){
         boolean[] checkedItems;
         checkedItems = listAdap.getCheckboxState();
+
+        //Committed Item Counter
+        int commitCounter = 0;
+
+        //Submit succeded
+        boolean submitSuccess = false;
 
         //Iterate over checkedItems
         for(int i = 0; i < checkedItems.length; i++) {
             if (checkedItems[i]) {
                 String mealName = historyItems.get(i).getMealName();
 
-                networkHandler.sendMealToDatabase(historyItems.get(i));
+                if(networkHandler.sendMealToDatabase(historyItems.get(i))){
+                    /* submitt successfull */
 
-                Toast t = Toast.makeText(this, mealName, Toast.LENGTH_SHORT);
-                t.show();
+                    //Increment
+                    commitCounter++;
+
+                    //Set commit-value to true
+                    historyItems.get(i).setMealCommitted(true);
+                    dbHandler.updateMealCommitted(historyItems.get(i), 1);
+                }
+                else{
+                    Toast t = Toast.makeText(this, "While submitting: Could not establish or lost connection.", Toast.LENGTH_SHORT);
+                    t.show();
+
+                    return 0;
+                }
             }
         }
+
+        //Changes done.
+        Toast t = Toast.makeText(this, commitCounter+" items committed!", Toast.LENGTH_SHORT);
+        t.show();
+
+        return 1;
     }
 
     //Button to Home

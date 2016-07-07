@@ -70,6 +70,12 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM "+TABLE_MEALS+" WHERE ID="+meal_id+";");
     }
 
+    //Change meal_committed
+    public void updateMealCommitted(MealEntry meal, int isCommitted){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE "+TABLE_MEALS+" SET "+COLUMN_MEAL_COMMITTED+"="+isCommitted+" WHERE "+COLUMN_MEAL_ID+"="+meal.getMealId()+";");
+    }
+
     //Get DB content
     public ArrayList<MealEntry> loadDB(){
         ArrayList<MealEntry> queryResults = new ArrayList<MealEntry>();

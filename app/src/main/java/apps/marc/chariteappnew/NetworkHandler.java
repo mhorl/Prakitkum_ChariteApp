@@ -1,22 +1,13 @@
 package apps.marc.chariteappnew;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,7 +23,11 @@ public class NetworkHandler {
         this.connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
-    public void sendMealToDatabase(MealEntry meal){
+    public boolean sendMealToDatabase(MealEntry meal){
+
+        //Submit succeded
+        boolean submitSuccess = false;
+
         DownloadWebpageTask dlwebtask = new DownloadWebpageTask();
 
         String mealName = meal.getMealName();
@@ -42,20 +37,30 @@ public class NetworkHandler {
         String mealDateString = dateFormat.format(mealDate);
 
         String serverQuery = "http://192.168.56.1/PROJECTS/ChariteApp/commitData.php?mealName="+mealName+"&mealDate="+mealDateString;
-        dlwebtask.execute(serverQuery);
 
+        //Checking if Connection is available
+        networkInfo = connectivityManager.getActiveNetworkInfo();
 
+        //If available, submit.
+        if(networkInfo != null && networkInfo.isConnected()){
+            submitSuccess = true;
+            dlwebtask.execute(serverQuery);
+        }
+        else{
+            Log.i("Connection", "Submit failed. Check connection.");
+        }
+
+        Log.i("Connection", "Tasks done.");
+        Log.i("Connection", "Boolean is: "+submitSuccess);
+
+        return submitSuccess;
     }
 
     //Using AsyncTask to perform network-actions on differend thread
     private class DownloadWebpageTask extends AsyncTask<String, Void, String> {
+
         @Override
         protected String doInBackground(String... urls) {
-            //Checking if Connection is available
-            networkInfo = connectivityManager.getActiveNetworkInfo();
-
-            //Holding response-Code (200 - Ok, 401 - Unauthorized, -1 - Couldnt get code)
-            //int responseCode;
 
             //Holding response-Message
             String responseMessage = "";
@@ -67,27 +72,26 @@ public class NetworkHandler {
 
                     connection.setConnectTimeout(1000); //Milliseconds
                     connection.setRequestMethod("GET");
-                    connection.setDoInput(false);
+                    connection.setDoInput(true);
 
                     //Start query
                     connection.connect();
                     responseMessage = connection.getResponseMessage();
 
-                    Log.i("Connection", "query was started");
+                    //Success
+                    Log.i("Connection", "Submitted.");
 
                 }
                 catch(Exception e){
-                    Log.i("Connection", "SOMETHING WENT WRONG!");
+                    Log.i("Connection", "Submit failed. Check if server is available.");
                     e.printStackTrace();
                 }
             }
             else{
-                Toast t = Toast.makeText(context, "No connection! Check your internet connetion and repeat your action!", Toast.LENGTH_LONG);
-                t.show();
+                Log.i("Connection", "Submit failed. Check connection.");
             }
 
             return responseMessage;
         }
-
     }
 }
